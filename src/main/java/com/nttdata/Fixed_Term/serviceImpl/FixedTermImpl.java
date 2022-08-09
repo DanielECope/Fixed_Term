@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import java.time.LocalDateTime;
 
@@ -29,6 +30,11 @@ public class FixedTermImpl implements FixedTermService {
     @Override
     public Mono<FixedTerm> findById(String id) {
         return repository.findById(id);
+    }
+
+    @Override
+    public Flux<FixedTerm> findAll() {
+        return repository.findAll();
     }
 
     @Override
@@ -62,7 +68,6 @@ public class FixedTermImpl implements FixedTermService {
                         throw new RuntimeException("Business customers cannot have Fixed Term");
                         //Los clientes empresariales no puede tener cuentas de ahorro
                     }
-
                     return c;
                 })
                 .switchIfEmpty(obj=repository.save(fixedTerm))
